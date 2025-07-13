@@ -81,11 +81,11 @@ function saveGame() {
     });
     const { obfuscatedData, shift } = obfuscateData(saveData);
     const encodedData = toBase64(obfuscatedData);
-    localStorage.setItem("afk_save", JSON.stringify({ data: encodedData, shift: shift }));
+    localStorage.setItem("afk_save_test", JSON.stringify({ data: encodedData, shift: shift }));
 }
 
 function loadGame() {
-    const savedData = localStorage.getItem("afk_save");
+    const savedData = localStorage.getItem("afk_save_test");
     if (savedData) {
         const parsed = JSON.parse(savedData);
         const decodedData = fromBase64(parsed.data);
@@ -174,7 +174,7 @@ function resetGame() {
   upg2Cost = new ExpantaNum(10);
   upg3Cost = new ExpantaNum(750);
   upg4Cost = new ExpantaNum(750);
-  localStorage.removeItem("afk_save");
+  localStorage.removeItem("afk_save_test");
   saveGame();
   updateDisplay();
 }
