@@ -183,10 +183,12 @@ function resetGame() {
   upg1Cost = new ExpantaNum(3);
   upg2Cost = new ExpantaNum(10);
   upg3Cost = new ExpantaNum(750);
-  upg4Cost = new ExpantaNum(750);
+  upg4Cost = new ExpantaNum(1250);
   localStorage.removeItem("afk_save_test");
   saveGame();
   updateDisplay();
+  updateDisplay2();
+  document.getElementById("playtime").innerText = `Playtime: ${formatTime(playtime)}`;
 }
 function getSaveString() {
     const saveData = JSON.stringify({
