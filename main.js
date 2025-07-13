@@ -5,7 +5,7 @@ let amountUpg1 = new ExpantaNum(0);
 let amountUpg2 = new ExpantaNum(0);
 let amountUpg3 = new ExpantaNum(0);
 let amountUpg4 = new ExpantaNum(0);
-let amountUpg1cap = new ExpantaNum(50000);
+let amountUpg1cap = new ExpantaNum(40000);
 let amountUpg2cap = new ExpantaNum(15000);
 let amountUpg3cap = new ExpantaNum(30000);
 let amountUpg4cap = new ExpantaNum(40000);
@@ -115,7 +115,7 @@ function loadGame() {
             amountUpg2 = new ExpantaNum(gameData.amountUpg2 || 0);
             amountUpg3 = new ExpantaNum(gameData.amountUpg3 || 0);
             amountUpg4 = new ExpantaNum(gameData.amountUpg4 || 0);
-            amountUpg1cap = new ExpantaNum(gameData.amountUpg1cap || 50000);
+            amountUpg1cap = new ExpantaNum(gameData.amountUpg1cap || 40000);
             amountUpg2cap = new ExpantaNum(gameData.amountUpg2cap || 15000);
             amountUpg3cap = new ExpantaNum(gameData.amountUpg3cap || 30000);
             amountUpg4cap = new ExpantaNum(gameData.amountUpg4cap || 40000);
@@ -179,7 +179,7 @@ function resetGame() {
   amountUpg2 = new ExpantaNum(0);
   amountUpg3 = new ExpantaNum(0);
   amountUpg4 = new ExpantaNum(0);
-  amountUpg1cap = new ExpantaNum(50000);
+  amountUpg1cap = new ExpantaNum(40000);
   amountUpg2cap = new ExpantaNum(15000);
   amountUpg3cap = new ExpantaNum(30000);
   amountUpg4cap = new ExpantaNum(40000);
@@ -281,7 +281,7 @@ loadButton.onclick = () => {
             amountUpg2 = new ExpantaNum(data.amountUpg2 || 0);
             amountUpg3 = new ExpantaNum(data.amountUpg3 || 0);
             amountUpg4 = new ExpantaNum(data.amountUpg4 || 0);
-            amountUpg1cap = new ExpantaNum(data.amountUpg1cap || 50000);
+            amountUpg1cap = new ExpantaNum(data.amountUpg1cap || 40000);
             amountUpg2cap = new ExpantaNum(data.amountUpg2cap || 15000);
             amountUpg3cap = new ExpantaNum(data.amountUpg3cap || 30000);
             amountUpg4cap = new ExpantaNum(data.amountUpg4cap || 40000);
@@ -357,6 +357,12 @@ function copyGameSave() {
         alert("Failed to copy save.");
     });
 }
+function clampUpgradesToCaps() {
+  if (amountUpg1.gt(amountUpg1cap)) amountUpg1 = amountUpg1cap;
+  if (amountUpg2.gt(amountUpg2cap)) amountUpg2 = amountUpg2cap;
+  if (amountUpg3.gt(amountUpg3cap)) amountUpg3 = amountUpg3cap;
+  if (amountUpg4.gt(amountUpg4cap)) amountUpg4 = amountUpg4cap;
+}
 
 function evalMulti() {
   const original = new ExpantaNum(1.001);
@@ -375,6 +381,7 @@ function evalpow() {
   pow = ExpantaNum.mul(original.add(upg1),10000).ceil().div(10000);
 }
 function updateDisplay() {
+  clampUpgradesToCaps();
   document.getElementById("value").innerText    = `Value: ${format(value, 3)}`;
   document.getElementById("rebirths").innerText = `Rebirths: ${format(rebirths, 3)}`;
   document.getElementById("willgainreb").innerText = `Will gain rebirths: ${format(value.slog().log10(), 3)}`;
