@@ -5,6 +5,10 @@ let amountUpg1 = new ExpantaNum(0);
 let amountUpg2 = new ExpantaNum(0);
 let amountUpg3 = new ExpantaNum(0);
 let amountUpg4 = new ExpantaNum(0);
+let amountUpg1cap = new ExpantaNum(50000);
+let amountUpg2cap = new ExpantaNum(15000);
+let amountUpg3cap = new ExpantaNum(30000);
+let amountUpg4cap = new ExpantaNum(40000);
 let multi = new ExpantaNum(1.001);
 let base = new ExpantaNum(10);
 let pow = new ExpantaNum(1);
@@ -123,7 +127,7 @@ function rebirth() {
 }
 
 function buyUpgrade1() {
-  if (rebirths.gte(upg1Cost)) {
+  if (rebirths.gte(upg1Cost) && amountUpg1.lt(amountUpg1cap)) {
     rebirths = rebirths.sub(upg1Cost);
     amountUpg1 = amountUpg1.add(1);
     upg1Cost = upg1Cost.add(2);
@@ -133,7 +137,7 @@ function buyUpgrade1() {
 }
 
 function buyUpgrade2() {
-  if (rebirths.gte(upg2Cost)) {
+  if (rebirths.gte(upg2Cost) && amountUpg2.lt(amountUpg2cap)) {
     rebirths = rebirths.sub(upg2Cost);
     amountUpg2 = amountUpg2.add(1);
     upg2Cost   = upg2Cost.mul(1.5);
@@ -142,7 +146,7 @@ function buyUpgrade2() {
   }
 }
 function buyUpgrade3() {
-  if (rebirths.gte(upg3Cost)) {
+  if (rebirths.gte(upg3Cost) && amountUpg3.lt(amountUpg3cap)) {
     rebirths = rebirths.sub(upg3Cost);
     amountUpg3 = amountUpg3.add(1);
     upg3Cost   = upg3Cost.mul(1.25);
@@ -151,7 +155,7 @@ function buyUpgrade3() {
   }
 }
 function buyUpgrade4() {
-  if (rebirths.gte(upg4Cost)) {
+  if (rebirths.gte(upg4Cost) && amountUpg4.lt(amountUpg4cap)) {
     rebirths = rebirths.sub(upg4Cost);
     amountUpg4 = amountUpg4.add(1);
     upg4Cost   = upg4Cost.mul(1.4);
@@ -167,6 +171,10 @@ function resetGame() {
   amountUpg2 = new ExpantaNum(0);
   amountUpg3 = new ExpantaNum(0);
   amountUpg4 = new ExpantaNum(0);
+  amountUpg1cap = new ExpantaNum(50000);
+  amountUpg2cap = new ExpantaNum(15000);
+  amountUpg3cap = new ExpantaNum(30000);
+  amountUpg4cap = new ExpantaNum(40000);
   multi = new ExpantaNum(1.001);
   base = new ExpantaNum(10);
   pow = new ExpantaNum(1);
@@ -363,6 +371,10 @@ function updateDisplay2() { // this is for more speed incase your device is poor
   document.getElementById("upg2amount").innerText = format(amountUpg2, 0);
   document.getElementById("upg3amount").innerText = format(amountUpg3, 0);
   document.getElementById("upg4amount").innerText = format(amountUpg4, 0);
+  document.getElementById("upg1cap").innerText = `${format(amountUpg1cap, 0)}`;
+  document.getElementById("upg2cap").innerText = `${format(amountUpg2cap, 0)}`;
+  document.getElementById("upg3cap").innerText = `${format(amountUpg3cap, 0)}`;
+  document.getElementById("upg4cap").innerText = `${format(amountUpg4cap, 1)}`;
   document.getElementById("Multi").innerText = `Multi: ${format(multi, 3)}`;
   document.getElementById("Base").innerText = `Base: ${format(base, 1)}`;
   document.getElementById("pow").innerText = `Power: ${format(pow, 4)}`;
