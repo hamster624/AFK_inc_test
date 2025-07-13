@@ -1,0 +1,49 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-block-size: 100vh;
+  flex-direction: column;
+  text-align: center;
+}
+
+  
+  #value, #rebirths {
+    font-size: 2em;
+    margin: 20px 0;
+  }
+  
+  .upgrade {
+    margin: 10px 0;
+  }
+  
+  button {
+    padding: 10px 20px;
+    font-size: 1em;
+    margin: 5px;
+    cursor: pointer;
+  }
+  
+  textarea#saveInput {
+    inline-size: 100%;
+    max-inline-size: 600px;
+    margin-block-start: 10px;
+    font-family: monospace;
+  }
+#game-wrapper {
+  inline-size: 100%;
+  max-inline-size: 800px;
+}
+#playtime {
+  position: fixed;
+  inset-block-start: 10px;
+  inset-inline-end: 10px;
+  color: white;
+  font-family: monospace;
+  z-index: 999;
+}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AFK Incremental</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<body>
+  <div id="game-wrapper">
+  <h1>AFK Incremental</h1>
+  <div id="value">10</div>
+  <div id="rebirths">Rebirths: 0</div>
+  <div id="Multi">Multi: 1.001</div>
+  <div id="Base">Base: 10</div>
+  <div id="pow">Power: 1</div>
+  <div id="Formula">Formula 10↑↑((slog(value)×1.001)↑1.0000)</div>
+  <div class="upgrade">
+    <button onclick="buyUpgrade1()">Upgrade 1: Increase multiplier by +0.001 | Cost: <span id="upg1Cost">2</span> | Bought: <span id="upg1amount">0</span></button>
+  </div>
+  <div class="upgrade">
+    <button onclick="buyUpgrade2()">Upgrade 2: Increase the multiplier by +0.004 | Cost: <span id="upg2Cost">10</span> | Bought: <span id="upg2amount">0</span></button>
+  </div>  
+  <div class="upgrade">
+    <button onclick="buyUpgrade3()">Upgrade 3: Increase the base by +1 | Cost: <span id="upg3Cost">750</span> | Bought: <span id="upg3amount">0</span></button>
+  </div>
+  <div class="upgrade">
+    <button onclick="buyUpgrade4()">Upgrade 4: Increase power by +0.0001 | Cost: <span id="upg4Cost">1250</span> | Bought: <span id="upg4amount">0</span></button>
+  </div>
+  <button onclick="rebirth()">Rebirth (Cost:1F10)</button>
+  <button onclick="resetGame()">Reset Game</button>
+  <div id="willgainreb">Will gain rebirths:</div>
+  </div>
+</body>
+<div style="margin: 10px;">
+  <input id="scaleInput" type="number" step="0.1" min="0.4" max="3" placeholder="Scale amount (min 0.4)" style="inline-size: 155px; position: fixed; inset-block-start: 15px; inset-inline-start: 150px; background: black; color: white; border: 1px solid white; padding: 10px; z-index: 1000; border: 1px solid #ccc;">
+  <button onclick="scaleGameWrapper()" style="position: fixed; inset-block-start: 10px; inset-inline-start: 10px; background: black; color: white; border: 1px solid white; padding: 10px; z-index: 1000;">Scale Game</button>
+</div>
+<div id="playtime"></div>
+<script>
+  function scaleGameWrapper() {
+    const scaleValue = Math.max(parseFloat(document.getElementById('scaleInput').value),0.4);
+    if (!isNaN(scaleValue) && scaleValue > 0) {
+      document.getElementById('game-wrapper').style.transform = `scale(${scaleValue})`;
+    } else {
+      alert("Please enter a valid positive number.");
+    }
+  }
+</script>
+  <script src="ExpantaNum.js"></script>
+  <script src="format.js"></script>
+  <script src="main.js"></script>
+  <script src="calculator.js"></script>
+</body>
+</html>
