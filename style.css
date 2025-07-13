@@ -47,3 +47,34 @@ body {
   font-family: monospace;
   z-index: 999;
 }
+#tab-bar {
+  display: flex;
+  gap: 10px;
+  margin: 20px;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  background: #222;
+  color: white;
+  border: 1px solid #888;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.tab-button.active {
+  background: #444;
+  border-block-end: 2px solid lime;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+.tab-button.locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
