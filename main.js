@@ -70,9 +70,6 @@ function saveGame() {
     const saveData = JSON.stringify({
         value: value.toString(),
         rebirths: rebirths.toString(),
-        multi: multi.toString(),
-        base: base.toString(),
-        pow: pow.toString(),
         playtime: playtime.toString(),
         upg1Cost: upg1Cost.toString(),
         upg2Cost: upg2Cost.toString(),
@@ -103,9 +100,6 @@ function loadGame() {
             const gameData = JSON.parse(deobfuscatedData);
             value = new ExpantaNum(gameData.value || 10);
             rebirths = new ExpantaNum(gameData.rebirths || 0);
-            multi = new ExpantaNum(gameData.multi || 1.001);
-            base = new ExpantaNum(gameData.base || 10);
-            pow = new ExpantaNum(gameData.pow || 1);
             playtime = gameData.playtime || 0;
             upg1Cost = new ExpantaNum(gameData.upg1Cost || 3);
             upg2Cost = new ExpantaNum(gameData.upg2Cost || 10);
@@ -199,9 +193,6 @@ function getSaveString() {
         value: value.toString(),
         rebirths: rebirths.toString(),
         playtime: playtime.toString(),
-        multi: multi.toString(),
-        base: base.toString(),
-        pow: pow.toString(),
         upg1Cost: upg1Cost.toString(),
         upg2Cost: upg2Cost.toString(),
         upg3Cost: upg3Cost.toString(),
@@ -270,9 +261,6 @@ loadButton.onclick = () => {
             value = new ExpantaNum(data.value || 10);
             rebirths = new ExpantaNum(data.rebirths || 0);
             playtime = new ExpantaNum(data.playtime || 0);
-            multi = new ExpantaNum(data.multi || 1.001);
-            base = new ExpantaNum(data.base || 10);
-            pow = new ExpantaNum(data.pow || 1);
             upg1Cost = new ExpantaNum(data.upg1Cost || 3);
             upg2Cost = new ExpantaNum(data.upg2Cost || 10);
             upg3Cost = new ExpantaNum(data.upg3Cost || 750);
@@ -332,9 +320,6 @@ function copyGameSave() {
         value: value.toString(),
         rebirths: rebirths.toString(),
         playtime: playtime.toString(),
-        multi: multi.toString(),
-        base: base.toString(),
-        pow: pow.toString(),
         upg1Cost: upg1Cost.toString(),
         upg2Cost: upg2Cost.toString(),
         upg3Cost: upg3Cost.toString(),
