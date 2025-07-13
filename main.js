@@ -357,6 +357,82 @@ function copyGameSave() {
         alert("Failed to copy save.");
     });
 }
+function buyMaxUpgrade1() {
+  // Linear cost: current cost C, step = 2, sum S(Δ) = Δ*(2C + (Δ-1)*step)/2 <= rebirths
+  const C = upg1Cost;
+  const R = rebirths;
+  const step = new ExpantaNum(2);
+  // Solve quadratic: (step/2)Δ^2 + (C - step/2)Δ - R <= 0
+  // Δ = floor( [ -(C - s/2) + sqrt((C - s/2)^2 + 2*step*R) ] / step )
+  const halfStep = step.div(2);
+  const b = C.sub(halfStep);
+  const disc = b.pow(2).add(R.mul(step).mul(2)).sqrt();
+  const Δ = disc.sub(b).div(step).floor();
+  const maxBuy = ExpantaNum.min(Δ, amountUpg1cap.sub(amountUpg1));
+  if (maxBuy.lte(0)) return;
+  // Total cost: maxBuy*(2C + (maxBuy-1)*step)/2
+  const totalCost = maxBuy.mul(
+    C.mul(2).add(step.mul(maxBuy.sub(1)))
+  ).div(2);
+  rebirths = rebirths.sub(totalCost);
+  amountUpg1 = amountUpg1.add(maxBuy);
+  upg1Cost = upg1Cost.add(step.mul(maxBuy));
+  updateDisplay();
+  updateDisplay2();
+}
+
+function buyMaxUpgrade2() {
+  // Geometric cost: C * 1.5^n, sum S(Δ) = C*(m^Δ -1)/(m-1) <= R
+  const C = upg2Cost;
+  const R = rebirths;
+  const m = new ExpantaNum(1.5);
+  // Δ = floor( log(1 + R*(m-1)/C) / log(m) )
+  const numerator = R.mul(m.sub(1)).div(C).add(1);
+  const Δ = ExpantaNum.log(numerator, m).floor();
+  const maxBuy = ExpantaNum.min(Δ, amountUpg2cap.sub(amountUpg2));
+  if (maxBuy.lte(0)) return;
+  // Total cost = C*(m^maxBuy -1)/(m-1)
+  const totalCost = C.mul(m.pow(maxBuy).sub(1)).div(m.sub(1));
+  rebirths = rebirths.sub(totalCost);
+  amountUpg2 = amountUpg2.add(maxBuy);
+  upg2Cost = upg2Cost.mul(m.pow(maxBuy));
+  updateDisplay();
+  updateDisplay2();
+}
+
+function buyMaxUpgrade3() {
+  const C = upg3Cost;
+  const R = rebirths;
+  const m = new ExpantaNum(1.25);
+  const numerator = R.mul(m.sub(1)).div(C).add(1);
+  const Δ = ExpantaNum.log(numerator, m).floor();
+  const maxBuy = ExpantaNum.min(Δ, amountUpg3cap.sub(amountUpg3));
+  if (maxBuy.lte(0)) return;
+  const totalCost = C.mul(m.pow(maxBuy).sub(1)).div(m.sub(1));
+  rebirths = rebirths.sub(totalCost);
+  amountUpg3 = amountUpg3.add(maxBuy);
+  upg3Cost = upg3Cost.mul(m.pow(maxBuy));
+  updateDisplay();
+  updateDisplay2();
+}
+
+function buyMaxUpgrade4() {
+  // Geometric cost: factor = 1.4
+  const C = upg4Cost;
+  const R = rebirths;
+  const m = new ExpantaNum(1.4);
+  const numerator = R.mul(m.sub(1)).div(C).add(1);
+  const Δ = ExpantaNum.log(numerator, m).floor();
+  const maxBuy = ExpantaNum.min(Δ, amountUpg4cap.sub(amountUpg4));
+  if (maxBuy.lte(0)) return;
+  const totalCost = C.mul(m.pow(maxBuy).sub(1)).div(m.sub(1));
+  rebirths = rebirths.sub(totalCost);
+  amountUpg4 = amountUpg4.add(maxBuy);
+  upg4Cost = upg4Cost.mul(m.pow(maxBuy));
+  updateDisplay();
+  updateDisplay2();
+}
+
 function clampUpgradesToCaps() {
   if (amountUpg1.gt(amountUpg1cap)) amountUpg1 = amountUpg1cap;
   if (amountUpg2.gt(amountUpg2cap)) amountUpg2 = amountUpg2cap;
