@@ -82,6 +82,10 @@ function saveGame() {
         amountUpg2: amountUpg2.toString(),
         amountUpg3: amountUpg3.toString(),
         amountUpg4: amountUpg4.toString(),
+        amountUpg1cap: amountUpg1cap.toString(),
+        amountUpg2cap: amountUpg2cap.toString(),
+        amountUpg3cap: amountUpg3cap.toString(),
+        amountUpg4cap: amountUpg4cap.toString(),
     });
     const { obfuscatedData, shift } = obfuscateData(saveData);
     const encodedData = toBase64(obfuscatedData);
@@ -111,6 +115,10 @@ function loadGame() {
             amountUpg2 = new ExpantaNum(gameData.amountUpg2 || 0);
             amountUpg3 = new ExpantaNum(gameData.amountUpg3 || 0);
             amountUpg4 = new ExpantaNum(gameData.amountUpg4 || 0);
+            amountUpg1cap = new ExpantaNum(gameData.amountUpg1cap || 50000);
+            amountUpg2cap = new ExpantaNum(gameData.amountUpg2cap || 15000);
+            amountUpg3cap = new ExpantaNum(gameData.amountUpg3cap || 30000);
+            amountUpg4cap = new ExpantaNum(gameData.amountUpg4cap || 40000);
             updateDisplay();
             updateDisplay2();
         }
@@ -202,6 +210,10 @@ function getSaveString() {
         amountUpg2: amountUpg2.toString(),
         amountUpg3: amountUpg3.toString(),
         amountUpg4: amountUpg4.toString(),
+        amountUpg1cap: amountUpg1cap.toString(),
+        amountUpg2cap: amountUpg2cap.toString(),
+        amountUpg3cap: amountUpg3cap.toString(),
+        amountUpg4cap: amountUpg4cap.toString(),
     });
     const { obfuscatedData, shift } = obfuscateData(saveData);
     const encodedData = toBase64(obfuscatedData);
@@ -269,6 +281,10 @@ loadButton.onclick = () => {
             amountUpg2 = new ExpantaNum(data.amountUpg2 || 0);
             amountUpg3 = new ExpantaNum(data.amountUpg3 || 0);
             amountUpg4 = new ExpantaNum(data.amountUpg4 || 0);
+            amountUpg1cap = new ExpantaNum(data.amountUpg1cap || 50000);
+            amountUpg2cap = new ExpantaNum(data.amountUpg2cap || 15000);
+            amountUpg3cap = new ExpantaNum(data.amountUpg3cap || 30000);
+            amountUpg4cap = new ExpantaNum(data.amountUpg4cap || 40000);
 
             updateDisplay();
             updateDisplay2();
@@ -327,6 +343,10 @@ function copyGameSave() {
         amountUpg2: amountUpg2.toString(),
         amountUpg3: amountUpg3.toString(),
         amountUpg4: amountUpg4.toString(),
+        amountUpg1cap: amountUpg1cap.toString(),
+        amountUpg2cap: amountUpg2cap.toString(),
+        amountUpg3cap: amountUpg3cap.toString(),
+        amountUpg4cap: amountUpg4cap.toString(),
     });
     const { obfuscatedData, shift } = obfuscateData(saveData);
     const encoded = toBase64(String.fromCharCode(shift) + obfuscatedData);
