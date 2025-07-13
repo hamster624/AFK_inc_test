@@ -17,17 +17,24 @@
   <div id="Base">Base: 10</div>
   <div id="pow">Power: 1</div>
   <div id="Formula">Formula 10↑↑((slog(value)×1.001)↑1.0000)</div>
-  <div class="upgrade">
-    <button onclick="buyUpgrade1()">Upgrade 1: Increase multiplier by +0.001 | Cost: <span id="upg1Cost">2</span> | Bought: <span id="upg1amount">0</span>/<span id="upg1cap">50000</span></button>
-  </div>
-  <div class="upgrade">
-    <button onclick="buyUpgrade2()">Upgrade 2: Increase the multiplier by +0.004 | Cost: <span id="upg2Cost">10</span> | Bought: <span id="upg2amount">0</span>/<span id="upg2cap">15000</span></button>
-  </div>  
-  <div class="upgrade">
-    <button onclick="buyUpgrade3()">Upgrade 3: Increase the base by +1 | Cost: <span id="upg3Cost">750</span> | Bought: <span id="upg3amount">0</span>/<span id="upg3cap">30000</span></button>
-  </div>
-  <div class="upgrade">
-    <button onclick="buyUpgrade4()">Upgrade 4: Increase power by +0.0001 | Cost: <span id="upg4Cost">1250</span> | Bought: <span id="upg4amount">0</span>/<span id="upg4cap">40000</span></button>
+    <div class="upgrade">
+      <button onclick="buyUpgrade1()">Upgrade 1: +0.001 Multi | Cost: <span id="upg1Cost">2</span> | Bought: <span id="upg1amount">0</span>/<span id="upg1cap">50000</span></button>
+      <button onclick="buyMaxUpgrade1()">Buy Max</button>
+    </div>
+
+    <div class="upgrade">
+      <button onclick="buyUpgrade2()">Upgrade 2: +0.004 Multi | Cost: <span id="upg2Cost">10</span> | Bought: <span id="upg2amount">0</span>/<span id="upg2cap">15000</span></button>
+      <button onclick="buyMaxUpgrade2()">Buy Max</button>
+    </div>
+
+    <div class="upgrade">
+      <button onclick="buyUpgrade3()">Upgrade 3: +1 Base | Cost: <span id="upg3Cost">750</span> | Bought: <span id="upg3amount">0</span>/<span id="upg3cap">30000</span></button>
+      <button onclick="buyMaxUpgrade3()">Buy Max</button>
+    </div>
+
+    <div class="upgrade">
+      <button onclick="buyUpgrade4()">Upgrade 4: +0.0001 Power | Cost: <span id="upg4Cost">1250</span> | Bought: <span id="upg4amount">0</span>/<span id="upg4cap">40000</span></button>
+      <button onclick="buyMaxUpgrade4()">Buy Max</button>
   </div>
   <button onclick="rebirth()">Rebirth (Cost:1F10)</button>
   <button onclick="resetGame()">Reset Game</button>
