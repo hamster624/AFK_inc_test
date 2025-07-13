@@ -1,14 +1,18 @@
 let value = new ExpantaNum(10);
 let rebirths = new ExpantaNum(0);
+let transcends = new ExpantaNum(0);
+let transcended = new ExpantaNum(0);
 let playtime = 0;
 let amountUpg1 = new ExpantaNum(0);
 let amountUpg2 = new ExpantaNum(0);
 let amountUpg3 = new ExpantaNum(0);
 let amountUpg4 = new ExpantaNum(0);
+let amountUpg5 = new ExpantaNum(0);
 let amountUpg1cap = new ExpantaNum(40000);
 let amountUpg2cap = new ExpantaNum(15000);
 let amountUpg3cap = new ExpantaNum(30000);
 let amountUpg4cap = new ExpantaNum(40000);
+let amountUpg5cap = new ExpantaNum(10);
 let multi = new ExpantaNum(1.001);
 let base = new ExpantaNum(10);
 let pow = new ExpantaNum(1);
@@ -16,8 +20,10 @@ let upg1Cost = new ExpantaNum(3);
 let upg2Cost = new ExpantaNum(10);
 let upg3Cost = new ExpantaNum(750);
 let upg4Cost = new ExpantaNum(1250);
-
+let upg5Cost = new ExpantaNum(5);
 const rebirthThreshold = new ExpantaNum("(10^)^9 10");
+const transcendThreshold = new ExpantaNum("10^^ee100000");
+
 function updateValue() {
   value = ExpantaNum.tetr(base, ExpantaNum.pow(ExpantaNum.mul(ExpantaNum.slog(value), multi),pow));
 }
@@ -75,14 +81,17 @@ function saveGame() {
         upg2Cost: upg2Cost.toString(),
         upg3Cost: upg3Cost.toString(),
         upg4Cost: upg4Cost.toString(),
+        upg5Cost: upg5Cost.toString(),
         amountUpg1: amountUpg1.toString(),
         amountUpg2: amountUpg2.toString(),
         amountUpg3: amountUpg3.toString(),
         amountUpg4: amountUpg4.toString(),
+        amountUpg5: amountUpg5.toString(),
         amountUpg1cap: amountUpg1cap.toString(),
         amountUpg2cap: amountUpg2cap.toString(),
         amountUpg3cap: amountUpg3cap.toString(),
         amountUpg4cap: amountUpg4cap.toString(),
+        amountUpg5cap: amountUpg5cap.toString(),
     });
     const { obfuscatedData, shift } = obfuscateData(saveData);
     const encodedData = toBase64(obfuscatedData);
@@ -100,19 +109,23 @@ function loadGame() {
             const gameData = JSON.parse(deobfuscatedData);
             value = new ExpantaNum(gameData.value || 10);
             rebirths = new ExpantaNum(gameData.rebirths || 0);
+            transcends = new ExpantaNum(gameData.transcends || 0);
             playtime = gameData.playtime || 0;
             upg1Cost = new ExpantaNum(gameData.upg1Cost || 3);
             upg2Cost = new ExpantaNum(gameData.upg2Cost || 10);
             upg3Cost = new ExpantaNum(gameData.upg3Cost || 750);
             upg4Cost = new ExpantaNum(gameData.upg4Cost || 1250);
+            upg5Cost = new ExpantaNum(gameData.upg5Cost || 5);
             amountUpg1 = new ExpantaNum(gameData.amountUpg1 || 0);
             amountUpg2 = new ExpantaNum(gameData.amountUpg2 || 0);
             amountUpg3 = new ExpantaNum(gameData.amountUpg3 || 0);
             amountUpg4 = new ExpantaNum(gameData.amountUpg4 || 0);
+            amountUpg5 = new ExpantaNum(gameData.amountUpg5 || 0);
             amountUpg1cap = new ExpantaNum(gameData.amountUpg1cap || 40000);
             amountUpg2cap = new ExpantaNum(gameData.amountUpg2cap || 15000);
             amountUpg3cap = new ExpantaNum(gameData.amountUpg3cap || 30000);
             amountUpg4cap = new ExpantaNum(gameData.amountUpg4cap || 40000);
+            amountUpg5cap = new ExpantaNum(gameData.amountUpg5cap || 10);
             updateDisplay();
             updateDisplay2();
         }
@@ -124,6 +137,16 @@ function rebirth() {
     const earnedRebirths = value.slog().log10();
     rebirths = rebirths.add(earnedRebirths);
     value = new ExpantaNum(10);
+    updateDisplay();
+  }
+}
+function transcend() {
+  if (value.gte(transcendThreshold)) {
+    const earnedtranscend = value.slog().log10().log10().log10();
+    transcends = transcends.add(earnedtranscend);
+    value = new ExpantaNum(10);
+    rebirths = new ExpantaNum(0);
+    transcended = new ExpantaNum(1);
     updateDisplay();
   }
 }
@@ -165,6 +188,15 @@ function buyUpgrade4() {
     updateDisplay2();
   }
 }
+function buyUpgrade5() {
+  if (transcend.gte(upg5Cost) && amountUpg5.lt(amountUpg5cap)) {
+    transcends = transcends.sub(upg5Cost);
+    amountUpg5 = amountUpg5.add(1);
+    upg5Cost   = upg5Cost.add(1);
+    updateDisplay();
+    updateDisplay2();
+  }
+}
 function resetGame() {
   value = new ExpantaNum(10);
   rebirths = new ExpantaNum(0);
@@ -173,17 +205,21 @@ function resetGame() {
   amountUpg2 = new ExpantaNum(0);
   amountUpg3 = new ExpantaNum(0);
   amountUpg4 = new ExpantaNum(0);
+  amountUpg5 = new ExpantaNum(0);
   amountUpg1cap = new ExpantaNum(40000);
   amountUpg2cap = new ExpantaNum(15000);
   amountUpg3cap = new ExpantaNum(30000);
   amountUpg4cap = new ExpantaNum(40000);
+  amountUpg5 = new ExpantaNum(10);
   multi = new ExpantaNum(1.001);
   base = new ExpantaNum(10);
   pow = new ExpantaNum(1);
+  transcends = new ExpantaNum(0);
   upg1Cost = new ExpantaNum(3);
   upg2Cost = new ExpantaNum(10);
   upg3Cost = new ExpantaNum(750);
   upg4Cost = new ExpantaNum(1250);
+  upg5Cost = new ExpantaNum(5);
   localStorage.removeItem("afk_save_test");
   saveGame();
   updateDisplay();
@@ -194,19 +230,24 @@ function getSaveString() {
     const saveData = JSON.stringify({
         value: value.toString(),
         rebirths: rebirths.toString(),
+        transcends: transcends.toString(),
         playtime: playtime.toString(),
         upg1Cost: upg1Cost.toString(),
         upg2Cost: upg2Cost.toString(),
         upg3Cost: upg3Cost.toString(),
         upg4Cost: upg4Cost.toString(),
+        upg5Cost: upg5Cost.toString(),
         amountUpg1: amountUpg1.toString(),
         amountUpg2: amountUpg2.toString(),
         amountUpg3: amountUpg3.toString(),
         amountUpg4: amountUpg4.toString(),
+        amountUpg5: amountUpg5.toString(),
         amountUpg1cap: amountUpg1cap.toString(),
         amountUpg2cap: amountUpg2cap.toString(),
         amountUpg3cap: amountUpg3cap.toString(),
         amountUpg4cap: amountUpg4cap.toString(),
+        amountUpg5cap: amountUpg5cap.toString(),
+        
     });
     const { obfuscatedData, shift } = obfuscateData(saveData);
     const encodedData = toBase64(obfuscatedData);
@@ -267,14 +308,17 @@ loadButton.onclick = () => {
             upg2Cost = new ExpantaNum(data.upg2Cost || 10);
             upg3Cost = new ExpantaNum(data.upg3Cost || 750);
             upg4Cost = new ExpantaNum(data.upg4Cost || 1250);
+            upg5Cost = new ExpantaNum(data.upg5Cost || 5);
             amountUpg1 = new ExpantaNum(data.amountUpg1 || 0);
             amountUpg2 = new ExpantaNum(data.amountUpg2 || 0);
             amountUpg3 = new ExpantaNum(data.amountUpg3 || 0);
             amountUpg4 = new ExpantaNum(data.amountUpg4 || 0);
+            amountUpg5 = new ExpantaNum(data.amountUpg5 || 0);
             amountUpg1cap = new ExpantaNum(data.amountUpg1cap || 40000);
             amountUpg2cap = new ExpantaNum(data.amountUpg2cap || 15000);
             amountUpg3cap = new ExpantaNum(data.amountUpg3cap || 30000);
             amountUpg4cap = new ExpantaNum(data.amountUpg4cap || 40000);
+            amountUpg5cap = new ExpantaNum(data.amountUpg5cap || 10);
 
             updateDisplay();
             updateDisplay2();
@@ -321,19 +365,24 @@ function copyGameSave() {
     const saveData = JSON.stringify({
         value: value.toString(),
         rebirths: rebirths.toString(),
+        transcends: transcends.toString(),
         playtime: playtime.toString(),
         upg1Cost: upg1Cost.toString(),
         upg2Cost: upg2Cost.toString(),
         upg3Cost: upg3Cost.toString(),
         upg4Cost: upg4Cost.toString(),
+        upg5Cost: upg5Cost.toString(),
         amountUpg1: amountUpg1.toString(),
         amountUpg2: amountUpg2.toString(),
         amountUpg3: amountUpg3.toString(),
         amountUpg4: amountUpg4.toString(),
+        amountUpg5: amountUpg5.toString(),
         amountUpg1cap: amountUpg1cap.toString(),
         amountUpg2cap: amountUpg2cap.toString(),
         amountUpg3cap: amountUpg3cap.toString(),
         amountUpg4cap: amountUpg4cap.toString(),
+        amountUpg5cap: amountUpg5cap.toString(),
+        
     });
     const { obfuscatedData, shift } = obfuscateData(saveData);
     const encoded = toBase64(String.fromCharCode(shift) + obfuscatedData);
@@ -425,6 +474,7 @@ function clampUpgradesToCaps() {
   if (amountUpg2.gt(amountUpg2cap)) amountUpg2 = amountUpg2cap;
   if (amountUpg3.gt(amountUpg3cap)) amountUpg3 = amountUpg3cap;
   if (amountUpg4.gt(amountUpg4cap)) amountUpg4 = amountUpg4cap;
+  if (amountUpg5.gt(amountUpg5cap)) amountUpg5 = amountUpg5cap;
 }
 
 function evalMulti() {
@@ -441,13 +491,15 @@ function evalBase() {
 function evalpow() {
   const original = new ExpantaNum(1);
   const upg1 = amountUpg4.mul(new ExpantaNum(0.0001));
-  pow = ExpantaNum.mul(original.add(upg1),10000).ceil().div(10000);
+  pow = ExpantaNum.mul(original.add(upg1).add(amountUpg5),10000).ceil().div(10000);
 }
 function updateDisplay() {
   clampUpgradesToCaps();
   document.getElementById("value").innerText    = `Value: ${format(value, 3)}`;
   document.getElementById("rebirths").innerText = `Rebirths: ${format(rebirths, 3)}`;
+  document.getElementById("transcend").innerText = `Transcend: ${format(transcends, 3)}`;
   document.getElementById("willgainreb").innerText = `Will gain rebirths: ${format(value.slog().log10(), 3)}`;
+  document.getElementById("willgaintran").innerText = `Will gain transcend: ${format(value.slog().log10().log10().log10(), 3)}`;
 }
 function updateDisplay2() { // this is for more speed incase your device is poor because we dont need to update these ones if they aren't changing
   evalMulti();
@@ -457,14 +509,17 @@ function updateDisplay2() { // this is for more speed incase your device is poor
   document.getElementById("upg2Cost").innerText = format(upg2Cost, 3);
   document.getElementById("upg3Cost").innerText = format(upg3Cost, 3);
   document.getElementById("upg4Cost").innerText = format(upg4Cost, 3);
+  document.getElementById("upg5Cost").innerText = format(upg5Cost, 3);
   document.getElementById("upg1amount").innerText = format(amountUpg1, 0);
   document.getElementById("upg2amount").innerText = format(amountUpg2, 0);
   document.getElementById("upg3amount").innerText = format(amountUpg3, 0);
   document.getElementById("upg4amount").innerText = format(amountUpg4, 0);
+  document.getElementById("upg5amount").innerText = format(amountUpg5, 0);
   document.getElementById("upg1cap").innerText = `${format(amountUpg1cap, 0)}`;
   document.getElementById("upg2cap").innerText = `${format(amountUpg2cap, 0)}`;
   document.getElementById("upg3cap").innerText = `${format(amountUpg3cap, 0)}`;
-  document.getElementById("upg4cap").innerText = `${format(amountUpg4cap, 1)}`;
+  document.getElementById("upg4cap").innerText = `${format(amountUpg4cap, 0)}`;
+  document.getElementById("upg5cap").innerText = `${format(amountUpg5cap, 0)}`;
   document.getElementById("Multi").innerText = `Multi: ${format(multi, 3)}`;
   document.getElementById("Base").innerText = `Base: ${format(base, 1)}`;
   document.getElementById("pow").innerText = `Power: ${format(pow, 4)}`;
