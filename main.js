@@ -147,6 +147,24 @@ function transcend() {
     value = new ExpantaNum(10);
     rebirths = new ExpantaNum(0);
     transcended = new ExpantaNum(1);
+    amountUpg1 = new ExpantaNum(0);
+    amountUpg2 = new ExpantaNum(0);
+    amountUpg3 = new ExpantaNum(0);
+    amountUpg4 = new ExpantaNum(0);
+    amountUpg5 = new ExpantaNum(0);
+    amountUpg1cap = new ExpantaNum(40000);
+    amountUpg2cap = new ExpantaNum(15000);
+    amountUpg3cap = new ExpantaNum(30000);
+    amountUpg4cap = new ExpantaNum(40000);
+    amountUpg5 = new ExpantaNum(10);
+    multi = new ExpantaNum(1.001);
+    base = new ExpantaNum(10);
+    pow = new ExpantaNum(1);
+    upg1Cost = new ExpantaNum(3);
+    upg2Cost = new ExpantaNum(10);
+    upg3Cost = new ExpantaNum(750);
+    upg4Cost = new ExpantaNum(1250);
+    upg5Cost = new ExpantaNum(5);
     updateDisplay();
   }
 }
