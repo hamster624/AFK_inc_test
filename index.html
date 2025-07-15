@@ -11,13 +11,13 @@
   <script src="format.js"></script>
   <script src="main.js"></script>
   <script src="calculator.js"></script>
-  <div id="tab-bar">
-    <button class="tab-button active" onclick="switchTab('game')">Game</button>
-    <button id="transcend-tab-button" class="tab-button locked" onclick="tryOpenTranscend()">Transcend (Locked - 1Fee100000 required)</button>
-  </div>
 
   <div id="game-wrapper" class="tab-content active">
-    <div id="value">10</div>
+    <div id="tab-bar">
+      <button class="tab-button active" onclick="switchTab('game')">Game</button>
+      <button id="transcend-tab-button" class="tab-button locked" onclick="tryOpenTranscend()">Transcend (Locked - 1Fee100000 required)</button>
+    </div>    
+    <div id="value">Value:</div>
     <div id="rebirths">Rebirths: 0</div>
     <div id="Multi">Multi: 1.001</div>
     <div id="Base">Base: 10</div>
@@ -61,14 +61,14 @@
     <div id="willgaintran">Will gain transcend:</div>    
   </div>
   <div style="margin: 10px;">
-    <input id="scaleInput" type="number" step="0.1" min="0.4" max="3" placeholder="Scale amount (min 0.4)" style="inline-size: 155px; position: fixed; inset-block-start: 15px; inset-inline-start: 150px; background: black; color: white; border: 1px solid white; padding: 10px; z-index: 1000;">
+    <input id="scaleInput" type="number" step="0.1" min="0.4" max="3" placeholder="Scale amount (0.4-2.0)" style="inline-size: 155px; position: fixed; inset-block-start: 15px; inset-inline-start: 150px; background: black; color: white; border: 1px solid white; padding: 10px; z-index: 1000;">
     <button onclick="scaleGameWrapper()" style="position: fixed; inset-block-start: 10px; inset-inline-start: 10px; background: black; color: white; border: 1px solid white; padding: 10px; z-index: 1000;">Scale Game</button>
   </div>
 
   <div id="playtime"></div>
   <script>
     function scaleGameWrapper() {
-      const scaleValue = Math.max(parseFloat(document.getElementById('scaleInput').value), 0.4);
+      const scaleValue = Math.min(Math.max(parseFloat(document.getElementById('scaleInput').value), 0.4),2);
       if (!isNaN(scaleValue) && scaleValue > 0) {
         document.querySelectorAll('.tab-content').forEach(el => {
           el.style.transform = `scale(${scaleValue})`;
