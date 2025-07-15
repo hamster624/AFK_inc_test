@@ -16,7 +16,8 @@
     <div id="tab-bar">
       <button class="tab-button active" onclick="switchTab('game')">Game</button>
       <button id="transcend-tab-button" class="tab-button locked" onclick="tryOpenTranscend()">Transcend (Locked - 1Fee100000 required)</button>
-    </div>    
+    </div>
+
     <div id="value">Value:</div>
     <div id="rebirths">Rebirths: 0</div>
     <div id="Multi">Multi: 1.001</div>
@@ -47,9 +48,14 @@
     <button onclick="rebirth()">Rebirth (Cost:1F10)</button>
     <button onclick="resetGame()">Reset Game</button>
     <div id="willgainreb">Will gain rebirths:</div>
-
   </div>
+
   <div id="transcend-wrapper" class="tab-content">
+    <div id="tab-bar-transcend">
+      <button class="tab-button" onclick="switchTab('game')">Game</button>
+      <button id="transcend-tab-button-2" class="tab-button locked" onclick="tryOpenTranscend()">Transcend (Locked - 1Fee100000 required)</button>
+    </div>
+
     <h1>Transcend Layer</h1>
     <div id="transcend">Transcend Points: 0</div>
 
@@ -60,12 +66,14 @@
     <button onclick="transcend()">Transcend</button>
     <div id="willgaintran">Will gain transcend:</div>    
   </div>
+
   <div style="margin: 10px;">
     <input id="scaleInput" type="number" step="0.1" min="0.4" max="3" placeholder="Scale amount (0.4-2.0)" style="inline-size: 155px; position: fixed; inset-block-start: 15px; inset-inline-start: 150px; background: black; color: white; border: 1px solid white; padding: 10px; z-index: 1000;">
     <button onclick="scaleGameWrapper()" style="position: fixed; inset-block-start: 10px; inset-inline-start: 10px; background: black; color: white; border: 1px solid white; padding: 10px; z-index: 1000;">Scale Game</button>
   </div>
 
   <div id="playtime"></div>
+
   <script>
     function scaleGameWrapper() {
       const scaleValue = Math.min(Math.max(parseFloat(document.getElementById('scaleInput').value), 0.4),2);
@@ -80,29 +88,38 @@
 
     function switchTab(tab) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('active'));
       if (tab === 'game') {
         document.getElementById('game-wrapper').classList.add('active');
-        document.querySelectorAll('.tab-button')[0].classList.add('active');
       } else if (tab === 'transcend') {
         document.getElementById('transcend-wrapper').classList.add('active');
-        document.querySelectorAll('.tab-button')[1].classList.add('active');
       }
+
+      const buttons = document.querySelectorAll('.tab-button');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      buttons.forEach(btn => {
+        if (tab === 'game' && btn.textContent.includes("Game")) btn.classList.add('active');
+        if (tab === 'transcend' && btn.textContent.includes("Transcend")) btn.classList.add('active');
+      });
     }
-  </script>
-  <script>
+
     const TRANSCEND_UNLOCK_REQ = ExpantaNum("10^^ee100000");
 
     function updateTabLockStatus() {
-      const transcendBtn = document.getElementById("transcend-tab-button");
+      const transcendBtn1 = document.getElementById("transcend-tab-button");
+      const transcendBtn2 = document.getElementById("transcend-tab-button-2");
 
-      if (value.gte(TRANSCEND_UNLOCK_REQ) || transcended.eq(1)) {
-        transcendBtn.classList.remove("locked");
-        transcendBtn.textContent = "Transcend";
-      } else {
-        transcendBtn.classList.add("locked");
-        transcendBtn.textContent = "Transcend (Locked - 1Fee100000 required)";
-      }
+      const unlocked = value.gte(TRANSCEND_UNLOCK_REQ) || transcended.eq(1);
+      const label = unlocked ? "Transcend" : "Transcend (Locked - 1Fee100000 required)";
+
+      [transcendBtn1, transcendBtn2].forEach(btn => {
+        if (!btn) return;
+        btn.textContent = label;
+        if (unlocked) {
+          btn.classList.remove("locked");
+        } else {
+          btn.classList.add("locked");
+        }
+      });
     }
 
     function tryOpenTranscend() {
@@ -110,6 +127,7 @@
         switchTab("transcend");
       }
     }
+
     setInterval(updateTabLockStatus, 20);
   </script>
 </body>
