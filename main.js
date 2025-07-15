@@ -588,8 +588,7 @@ function updateDisplay() {
   }
 
   document.getElementById("value").innerText    = `Value: ${format(value, 3)}${valueOomsText}`;
-  document.getElementById("rebirths").innerText = `Rebirths: ${format(rebirths, 3)}`;
-  document.getElementById("transcend").innerText = `Transcend: ${format(transcends, 3)}`;
+
   document.getElementById("willgainreb").innerText = 
     `Will gain rebirths: ${format(currentWillGain, 3)}${willOomsText}`;
   document.getElementById("willgaintran").innerText = 
@@ -603,7 +602,9 @@ function updateDisplay() {
 function updateDisplay2() { // this is for more speed incase your device is poor because we dont need to update these ones if they aren't changing
   evalMulti();
   evalBase();
-  evalpow();
+  evalpow();  
+  document.getElementById("rebirths").innerText = `Rebirths: ${format(rebirths, 3)}`;
+  document.getElementById("transcend").innerText = `Transcend: ${format(transcends, 3)}`;
   document.getElementById("upg1Cost").innerText = format(upg1Cost, 3);
   document.getElementById("upg2Cost").innerText = format(upg2Cost, 3);
   document.getElementById("upg3Cost").innerText = format(upg3Cost, 3);
