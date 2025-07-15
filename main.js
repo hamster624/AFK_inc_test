@@ -2,7 +2,7 @@ let value = new ExpantaNum(10);
 let rebirths = new ExpantaNum(0);
 let transcends = new ExpantaNum(0);
 let transcended = new ExpantaNum(0);
-let playtime = 0;
+let playtime = new ExpantaNum(0);
 let amountUpg1 = new ExpantaNum(0);
 let amountUpg2 = new ExpantaNum(0);
 let amountUpg3 = new ExpantaNum(0);
@@ -21,12 +21,60 @@ let upg2Cost = new ExpantaNum(10);
 let upg3Cost = new ExpantaNum(750);
 let upg4Cost = new ExpantaNum(1250);
 let upg5Cost = new ExpantaNum(5);
+let prevValue = value;
+let prevWillGainReb = value.slog().log10();
+const dt = 0.02;
 const rebirthThreshold = new ExpantaNum("(10^)^9 10");
 const transcendThreshold = new ExpantaNum("10^^ee100000");
+
 
 function updateValue() {
   value = ExpantaNum.tetr(base, ExpantaNum.pow(ExpantaNum.mul(ExpantaNum.slog(value), multi),pow));
 }
+function calcSmartOomsPerSecond(startValue, endValue, deltaTimeSeconds, maxLayer = 10000, threshold = new ExpantaNum("1000")) {
+    if (deltaTimeSeconds <= 0) return { rate: new ExpantaNum(0), layer: 1 };
+    function computeRateAtLayer(layer, startVal, endVal, dt) {
+        const layers = new ExpantaNum(layer);
+        const minVal = ExpantaNum.tetrate(10, layers.sub(1));
+        const start = ExpantaNum.max(startVal, minVal);
+        const end = ExpantaNum.max(endVal, minVal);
+        const startOom = start.iteratedlog(10, layers);
+        const endOom = end.iteratedlog(10, layers);
+        return endOom.sub(startOom).div(dt);
+    }
+    const sEnd = endValue.slog();
+    const tdt = new ExpantaNum(threshold).mul(deltaTimeSeconds);
+    const slogTdt = tdt.slog();
+    let candidateLayer = sEnd.sub(slogTdt).ceil();
+    candidateLayer = ExpantaNum.min(ExpantaNum.max(candidateLayer, 1), maxLayer).toNumber();
+
+    let finalLayer = candidateLayer;
+    let finalRate = computeRateAtLayer(candidateLayer, startValue, endValue, deltaTimeSeconds);
+    if (candidateLayer > 1) {
+        const prevLayer = candidateLayer - 1;
+        const prevRate = computeRateAtLayer(prevLayer, startValue, endValue, deltaTimeSeconds);
+        if (prevRate.lte(threshold)) {
+            finalLayer = prevLayer;
+            finalRate = prevRate;
+        }
+    }
+    if (!finalRate.lte(threshold) && candidateLayer < maxLayer) {
+        for (let layer = candidateLayer + 1; layer <= maxLayer; layer++) {
+            const rate = computeRateAtLayer(layer, startValue, endValue, deltaTimeSeconds);
+            if (rate.lte(threshold)) {
+                finalLayer = layer;
+                finalRate = rate;
+                break;
+            }
+            if (layer === maxLayer) {
+                finalLayer = maxLayer;
+                finalRate = rate;
+            }
+        }
+    }
+    return { rate: finalRate, layer: finalLayer };
+}
+
 function obfuscateData(str) {
     const shift = Math.floor(Math.random() * 256);
     let obfuscated = '';
@@ -76,6 +124,8 @@ function saveGame() {
     const saveData = JSON.stringify({
         value: value.toString(),
         rebirths: rebirths.toString(),
+        transcends: transcends.toString(),
+        transcended: transcended.toString(),
         playtime: playtime.toString(),
         upg1Cost: upg1Cost.toString(),
         upg2Cost: upg2Cost.toString(),
@@ -110,6 +160,7 @@ function loadGame() {
             value = new ExpantaNum(gameData.value || 10);
             rebirths = new ExpantaNum(gameData.rebirths || 0);
             transcends = new ExpantaNum(gameData.transcends || 0);
+            transcended = new ExpantaNum(gameData.transcended || 0);
             playtime = gameData.playtime || 0;
             upg1Cost = new ExpantaNum(gameData.upg1Cost || 3);
             upg2Cost = new ExpantaNum(gameData.upg2Cost || 10);
@@ -138,6 +189,7 @@ function rebirth() {
     rebirths = rebirths.add(earnedRebirths);
     value = new ExpantaNum(10);
     updateDisplay();
+    updateDisplay2();
   }
 }
 function transcend() {
@@ -151,12 +203,10 @@ function transcend() {
     amountUpg2 = new ExpantaNum(0);
     amountUpg3 = new ExpantaNum(0);
     amountUpg4 = new ExpantaNum(0);
-    amountUpg5 = new ExpantaNum(0);
     amountUpg1cap = new ExpantaNum(40000);
     amountUpg2cap = new ExpantaNum(15000);
     amountUpg3cap = new ExpantaNum(30000);
     amountUpg4cap = new ExpantaNum(40000);
-    amountUpg5 = new ExpantaNum(10);
     multi = new ExpantaNum(1.001);
     base = new ExpantaNum(10);
     pow = new ExpantaNum(1);
@@ -166,6 +216,7 @@ function transcend() {
     upg4Cost = new ExpantaNum(1250);
     upg5Cost = new ExpantaNum(5);
     updateDisplay();
+    updateDisplay2();
   }
 }
 
@@ -207,7 +258,7 @@ function buyUpgrade4() {
   }
 }
 function buyUpgrade5() {
-  if (transcend.gte(upg5Cost) && amountUpg5.lt(amountUpg5cap)) {
+  if (transcends.gte(upg5Cost) && amountUpg5.lt(amountUpg5cap)) {
     transcends = transcends.sub(upg5Cost);
     amountUpg5 = amountUpg5.add(1);
     upg5Cost   = upg5Cost.add(1);
@@ -216,6 +267,8 @@ function buyUpgrade5() {
   }
 }
 function resetGame() {
+  if (!confirm("Are you sure you want to reset the game? All progress will be lost.")) return;
+  
   value = new ExpantaNum(10);
   rebirths = new ExpantaNum(0);
   playtime = 0;
@@ -228,11 +281,11 @@ function resetGame() {
   amountUpg2cap = new ExpantaNum(15000);
   amountUpg3cap = new ExpantaNum(30000);
   amountUpg4cap = new ExpantaNum(40000);
-  amountUpg5 = new ExpantaNum(10);
   multi = new ExpantaNum(1.001);
   base = new ExpantaNum(10);
   pow = new ExpantaNum(1);
   transcends = new ExpantaNum(0);
+  transcended = new ExpantaNum(0);
   upg1Cost = new ExpantaNum(3);
   upg2Cost = new ExpantaNum(10);
   upg3Cost = new ExpantaNum(750);
@@ -244,11 +297,13 @@ function resetGame() {
   updateDisplay2();
   document.getElementById("playtime").innerText = `Playtime: ${formatTime(playtime)}`;
 }
+
 function getSaveString() {
     const saveData = JSON.stringify({
         value: value.toString(),
         rebirths: rebirths.toString(),
         transcends: transcends.toString(),
+        transcended: transcended.toString(),
         playtime: playtime.toString(),
         upg1Cost: upg1Cost.toString(),
         upg2Cost: upg2Cost.toString(),
@@ -322,6 +377,8 @@ loadButton.onclick = () => {
             value = new ExpantaNum(data.value || 10);
             rebirths = new ExpantaNum(data.rebirths || 0);
             playtime = new ExpantaNum(data.playtime || 0);
+            transcends = new ExpantaNum(data.transcends || 0);
+            transcended = new ExpantaNum(data.transcended || 0)
             upg1Cost = new ExpantaNum(data.upg1Cost || 3);
             upg2Cost = new ExpantaNum(data.upg2Cost || 10);
             upg3Cost = new ExpantaNum(data.upg3Cost || 750);
@@ -384,6 +441,7 @@ function copyGameSave() {
         value: value.toString(),
         rebirths: rebirths.toString(),
         transcends: transcends.toString(),
+        transcended: transcended.toString(),
         playtime: playtime.toString(),
         upg1Cost: upg1Cost.toString(),
         upg2Cost: upg2Cost.toString(),
@@ -513,12 +571,35 @@ function evalpow() {
 }
 function updateDisplay() {
   clampUpgradesToCaps();
-  document.getElementById("value").innerText    = `Value: ${format(value, 3)}`;
+  const currentValue    = value;
+  const currentWillGain = value.slog().log10();
+  const { rate: valueOomsRate, layer: valueOomsLayer } =
+    calcSmartOomsPerSecond(prevValue, currentValue, dt, 10001);
+  const { rate: willOomsRate, layer: willOomsLayer } =
+    calcSmartOomsPerSecond(prevWillGainReb, currentWillGain, dt, 10001);
+  let valueOomsText = "";
+  if (valueOomsLayer <= 10000) {
+    valueOomsText = ` (${format(valueOomsRate, 2)} OoMs^${valueOomsLayer}/s)`;
+  }
+
+  let willOomsText = "";
+  if (willOomsLayer <= 10000 && (value.slog().log10()) >= 1) {
+    willOomsText = ` (${format(willOomsRate, 5)} OoMs^${willOomsLayer}/s)`;
+  }
+
+  document.getElementById("value").innerText    = `Value: ${format(value, 3)}${valueOomsText}`;
   document.getElementById("rebirths").innerText = `Rebirths: ${format(rebirths, 3)}`;
   document.getElementById("transcend").innerText = `Transcend: ${format(transcends, 3)}`;
-  document.getElementById("willgainreb").innerText = `Will gain rebirths: ${format(value.slog().log10(), 3)}`;
-  document.getElementById("willgaintran").innerText = `Will gain transcend: ${format(value.slog().log10().log10().log10(), 3)}`;
+  document.getElementById("willgainreb").innerText = 
+    `Will gain rebirths: ${format(currentWillGain, 3)}${willOomsText}`;
+  document.getElementById("willgaintran").innerText = 
+    `Will gain transcend: ${format(value.slog().log10().log10().log10(), 3)}`;
+
+  prevValue        = currentValue;
+  prevWillGainReb  = currentWillGain;
+  
 }
+
 function updateDisplay2() { // this is for more speed incase your device is poor because we dont need to update these ones if they aren't changing
   evalMulti();
   evalBase();
