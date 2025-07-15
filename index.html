@@ -15,7 +15,7 @@
   <div id="game-wrapper" class="tab-content active">
     <div id="tab-bar">
       <button class="tab-button active" onclick="switchTab('game')">Game</button>
-      <button id="transcend-tab-button" class="tab-button locked" onclick="tryOpenTranscend()">Transcend (Locked - 1Fee100000 required)</button>
+      <button id="transcend-tab-button" class="tab-button locked" onclick="tryOpenTranscend()">Transcend (Locked - Fee100000 required)</button>
     </div>
 
     <div id="value">Value:</div>
@@ -63,7 +63,7 @@
       <button onclick="buyUpgrade5()">Upgrade 5: +1 Power | Cost: <span id="upg5Cost">5</span> | Bought: <span id="upg5amount">0</span>/<span id="upg5cap">10</span></button>
     </div>
 
-    <button onclick="transcend()">Transcend</button>
+    <button onclick="transcend()">Transcend (Cost: Fee100,000)</button>
     <div id="willgaintran">Will gain transcend:</div>    
   </div>
 
@@ -109,7 +109,7 @@
       const transcendBtn2 = document.getElementById("transcend-tab-button-2");
 
       const unlocked = value.gte(TRANSCEND_UNLOCK_REQ) || transcended.eq(1);
-      const label = unlocked ? "Transcend" : "Transcend (Locked - 1Fee100000 required)";
+      const label = unlocked ? "Transcend" : "Transcend (Locked - Fee100000 required)";
 
       [transcendBtn1, transcendBtn2].forEach(btn => {
         if (!btn) return;
