@@ -15,7 +15,7 @@
   <div id="game-wrapper" class="tab-content active">
     <div id="tab-bar">
       <button class="tab-button active" onclick="switchTab('game')">Game</button>
-      <button id="transcend-tab-button" class="tab-button locked" onclick="tryOpenTranscend()">Transcend (Locked - Fee100000 required)</button>
+      <button id="transcend-tab-button" class="tab-button locked" onclick="tryOpenTranscend()">Transcend (Locked - Fee25,000 required)</button>
     </div>
 
     <div id="value">Value:</div>
@@ -54,17 +54,25 @@
   <div id="transcend-wrapper" class="tab-content">
     <div id="tab-bar-transcend">
       <button class="tab-button" onclick="switchTab('game')">Game</button>
-      <button id="transcend-tab-button-2" class="tab-button locked" onclick="tryOpenTranscend()">Transcend (Locked - 1Fee100000 required)</button>
+      <button id="transcend-tab-button-2" class="tab-button locked" onclick="tryOpenTranscend()">Transcend (Locked - Fee25,000 required)</button>
     </div>
 
     <h1>Transcend Layer</h1>
     <div id="transcend">Transcend Points: 0</div>
 
     <div class="upgrade">
-      <button onclick="buyUpgrade5()">Upgrade 5: +1 Power | Cost: <span id="upg5Cost">5</span> | Bought: <span id="upg5amount">0</span>/<span id="upg5cap">10</span></button>
+      <button onclick="buyUpgrade5()">Transcend upgrade 1: +1 Power | Cost: <span id="upg5Cost">5</span> | Bought: <span id="upg5amount">0</span>/<span id="upg5cap">10</span></button>
     </div>
-
-    <button onclick="transcend()">Transcend (Cost: Fee100,000)</button>
+    <div class="upgrade">
+      <button onclick="buyUpgrade6()">Transcend upgrade 2: Multiply upgrade 4 cap by 1.5 | Cost: <span id="upg6Cost">10</span> | Bought: <span id="upg6amount">0</span>/<span id="upg6cap">5</span></button>
+    </div>
+    <div class="upgrade">
+      <button onclick="buyUpgrade7()">Transcend upgrade 3: Roots rebirth upgrades  2 - 4 costs by 2 | Cost: <span id="upg7Cost">20</span> | Bought: <span id="upg7amount">0</span>/<span id="upg7cap">5</span></button>
+    </div>
+    <div class="upgrade">
+      <button onclick="buyUpgrade8()">Transcend upgrade 4: Automatically gain 100%/s rebirths | Cost: <span id="upg8Cost">50</span> | Bought: <span id="upg8amount">0</span>/<span id="upg8cap">1</span></button>
+    </div>
+    <button onclick="transcend()">Transcend (Cost: Fee25,000)</button>
     <div id="willgaintran">Will gain transcend:</div>    
   </div>
 
@@ -103,14 +111,14 @@
       });
     }
 
-    const TRANSCEND_UNLOCK_REQ = ExpantaNum("10^^ee100000");
+    const TRANSCEND_UNLOCK_REQ = ExpantaNum("10^^ee25000");
 
     function updateTabLockStatus() {
       const transcendBtn1 = document.getElementById("transcend-tab-button");
       const transcendBtn2 = document.getElementById("transcend-tab-button-2");
 
       const unlocked = value.gte(TRANSCEND_UNLOCK_REQ) || transcended.eq(1);
-      const label = unlocked ? "Transcend" : "Transcend (Locked - Fee100000 required)";
+      const label = unlocked ? "Transcend" : "Transcend (Locked - Fee25,000 required)";
 
       [transcendBtn1, transcendBtn2].forEach(btn => {
         if (!btn) return;
