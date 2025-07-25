@@ -644,8 +644,8 @@ function evalMulti() {
 }
 function evalBase() {
   const original = new ExpantaNum(10);
-  const upg1 = amountUpg3.mul(new ExpantaNum(5));
-  base = ExpantaNum.mul(original.add(upg1),10).ceil().div(10);
+  const upg1 = amountUpg3.add(new ExpantaNum(10));
+  base = ExpantaNum.mul(original.pow(upg1),10).ceil().div(10);
 }
 function evalpow() {
   const original = new ExpantaNum(1);
