@@ -643,7 +643,7 @@ function evalMulti() {
   multi = ExpantaNum.mul(original.add(upg1).add(upg2),1000).ceil().div(1000); // Yeah there wasnt an easier way to round it i think idk
 }
 function evalBase() {
-  base = ExpantaNum.tetr(10,amountupg3.add(1)
+  base = ExpantaNum.tetr(10,amountUpg3.add(1)
 }
 function evalpow() {
   const original = new ExpantaNum(1);
