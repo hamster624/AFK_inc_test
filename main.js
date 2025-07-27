@@ -34,7 +34,7 @@ let prevValue = value;
 let prevWillGainReb = value.slog().log10();
 const dt = 0.02;
 const rebirthThreshold = new ExpantaNum("(10^)^9 10");
-const transcendThreshold = new ExpantaNum("10^^ee25000");
+const transcendThreshold = new ExpantaNum("10^^ee10000");
 
 function updateValue() {
   value = ExpantaNum.tetr(base, ExpantaNum.pow(ExpantaNum.mul(ExpantaNum.slog(value), multi),pow));
@@ -162,11 +162,11 @@ function saveGame() {
     });
     const { obfuscatedData, shift } = obfuscateData(saveData);
     const encodedData = toBase64(obfuscatedData);
-    localStorage.setItem("afk_save_test", JSON.stringify({ data: encodedData, shift: shift }));
+    localStorage.setItem("afk_save", JSON.stringify({ data: encodedData, shift: shift }));
 }
 
 function loadGame() {
-    const savedData = localStorage.getItem("afk_save_test");
+    const savedData = localStorage.getItem("afk_save");
     if (savedData) {
         const parsed = JSON.parse(savedData);
         const decodedData = fromBase64(parsed.data);
@@ -224,7 +224,7 @@ function rebirth() {
 }
 function transcend() {
   if (value.gte(transcendThreshold)) {
-    const earnedtranscend = value.slog().log10().log10().log10();
+    const earnedtranscend = value.slog().log10().log10().log10().add(1);
     transcends = transcends.add(earnedtranscend);
     value = new ExpantaNum(10);
     rebirths = new ExpantaNum(0);
@@ -361,7 +361,7 @@ function resetGame() {
   upg6Cost = new ExpantaNum(10);
   upg7Cost = new ExpantaNum(20);
   upg8Cost = new ExpantaNum(50);
-  localStorage.removeItem("afk_save_test");
+  localStorage.removeItem("afk_save");
   saveGame();
   updateDisplay();
   updateDisplay2();
@@ -643,7 +643,9 @@ function evalMulti() {
   multi = ExpantaNum.mul(original.add(upg1).add(upg2),1000).ceil().div(1000); // Yeah there wasnt an easier way to round it i think idk
 }
 function evalBase() {
-  base = ExpantaNum.tetr(10,amountUpg3.add(1)
+  const original = new ExpantaNum(10);
+  const upg1 = amountUpg3.mul(new ExpantaNum(1));
+  base = ExpantaNum.mul(original.add(upg1),10).ceil().div(10);
 }
 function evalpow() {
   const original = new ExpantaNum(1);
@@ -692,7 +694,7 @@ function updateDisplay() {
   document.getElementById("willgainreb").innerText = 
     `Will gain rebirths: ${format(currentWillGain, 3)}${willOomsText}`;
   document.getElementById("willgaintran").innerText = 
-    `Will gain transcend: ${format(value.slog().log10().log10().log10(), 3)}`;
+    `Will gain transcend: ${format(value.slog().log10().log10().log10().add(1), 3)}`;
   document.getElementById("rebirths").innerText = `Rebirths: ${format(rebirths, 3)}`;
   prevValue        = currentValue;
   prevWillGainReb  = currentWillGain;
