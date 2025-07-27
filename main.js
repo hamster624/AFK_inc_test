@@ -198,7 +198,7 @@ function loadGame() {
             amountUpg1cap = new ExpantaNum(gameData.amountUpg1cap || 40000);
             amountUpg2cap = new ExpantaNum(gameData.amountUpg2cap || 15000);
             amountUpg3cap = new ExpantaNum(gameData.amountUpg3cap || 30000);
-            amountUpg4cap = new ExpantaNum(gameData.amountUpg4cap || 40000);
+            amountUpg4cap = new ExpantaNum(92264062500);
             amountUpg5cap = new ExpantaNum(gameData.amountUpg5cap || 10);
             amountUpg6cap = new ExpantaNum(gameData.amountUpg6cap || 5);
             amountUpg7cap = new ExpantaNum(gameData.amountUpg7cap || 2);
