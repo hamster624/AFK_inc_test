@@ -190,7 +190,7 @@ function loadGame() {
             amountUpg1 = new ExpantaNum(gameData.amountUpg1 || 0);
             amountUpg2 = new ExpantaNum(gameData.amountUpg2 || 0);
             amountUpg3 = new ExpantaNum(gameData.amountUpg3 || 0);
-            amountUpg4 = new ExpantaNum(gameData.amountUpg4 || 0);
+            amountUpg4 = new ExpantaNum(92264062500);
             amountUpg5 = new ExpantaNum(gameData.amountUpg5 || 0);
             amountUpg6 = new ExpantaNum(gameData.amountUpg6 || 0);
             amountUpg7 = new ExpantaNum(gameData.amountUpg7 || 0);
