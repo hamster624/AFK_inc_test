@@ -672,7 +672,6 @@ function autoreb() {
   }
 }
 function updateDisplay() {
-  clampUpgradesToCaps();
   autoreb();
   const currentValue    = value;
   const currentWillGain = value.slog().log10();
