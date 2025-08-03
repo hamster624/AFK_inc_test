@@ -10,12 +10,14 @@
   <script src="ExpantaNum.js"></script>
   <script src="format.js"></script>
   <script src="main.js"></script>
-  <script src="calculator.js"></script>
+  <script src="settings.js"></script>
 
+  <!-- GAME TAB -->
   <div id="game-wrapper" class="tab-content active">
     <div id="tab-bar">
       <button class="tab-button active" onclick="switchTab('game')">Game</button>
-      <button id="transcend-tab-button" class="tab-button locked" onclick="tryOpenTranscend()">Transcend (Locked - Fee25,000 required)</button>
+      <button id="transcend-tab-button" class="tab-button locked" onclick="tryOpenTranscend()">Transcend (Locked - Fee10,000 required)</button>
+      <button class="tab-button" onclick="switchTab('settings')">Other</button>
     </div>
 
     <div id="value">Value:</div>
@@ -23,7 +25,7 @@
     <div id="Multi">Multi: 1.001</div>
     <div id="Base">Base: 10</div>
     <div id="pow">Power: 1</div>
-    <div id="Formula">Formula 10↑↑((slog(value)×1.001)↑1.0000)</div>
+    <div id="Formula">Value = 10↑↑((slog(Value)×1.001)↑1.0000)</div>
 
     <div class="upgrade">
       <button onclick="buyUpgrade1()">Upgrade 1: +0.001 Multi | Cost: <span id="upg1Cost">2</span> | Bought: <span id="upg1amount">0</span>/<span id="upg1cap">50000</span></button>
@@ -36,25 +38,26 @@
     </div>
 
     <div class="upgrade">
-      <button onclick="buyUpgrade3()">Upgrade 3: +1 Base | Cost: <span id="upg3Cost">750</span> | Bought: <span id="upg3amount">0</span>/<span id="upg3cap">30000</span></button>
+      <button onclick="buyUpgrade3()">Upgrade 3: +10 Base | Cost: <span id="upg3Cost">750</span> | Bought: <span id="upg3amount">0</span>/<span id="upg3cap">30000</span></button>
       <button onclick="buyMaxUpgrade3()">Buy Max</button>
     </div>
 
     <div class="upgrade">
-      <button onclick="buyUpgrade4()">Upgrade 4: +0.0001 Power | Cost: <span id="upg4Cost">1250</span> | Bought: <span id="upg4amount">0</span>/<span id="upg4cap">40000</span></button>
+      <button onclick="buyUpgrade4()">Upgrade 4: Adds a new value "Power" and increases it by +0.0001 | Cost: <span id="upg4Cost">1250</span> | Bought: <span id="upg4amount">0</span>/<span id="upg4cap">40000</span></button>
       <button onclick="buyMaxUpgrade4()">Buy Max</button>
     </div>
 
     <button onclick="rebirth()">Rebirth (Cost:1F10)</button>
-    <button onclick="resetGame()">Reset Game</button>
     <div id="willgainreb">Will gain rebirths:</div>
     <div id="playtime"></div>
   </div>
 
+  <!-- TRANSCEND TAB -->
   <div id="transcend-wrapper" class="tab-content">
-    <div id="tab-bar-transcend">
+    <div id="tab-bar">
       <button class="tab-button" onclick="switchTab('game')">Game</button>
-      <button id="transcend-tab-button-2" class="tab-button locked" onclick="tryOpenTranscend()">Transcend (Locked - Fee25,000 required)</button>
+      <button id="transcend-tab-button-2" class="tab-button locked" onclick="tryOpenTranscend()">Transcend (Locked - Fee10,000 required)</button>
+      <button class="tab-button" onclick="switchTab('settings')">Other</button>
     </div>
 
     <h1>Transcend Layer</h1>
@@ -67,79 +70,35 @@
       <button onclick="buyUpgrade6()">Transcend upgrade 2: Multiply upgrade 4 cap by 1.5 | Cost: <span id="upg6Cost">10</span> | Bought: <span id="upg6amount">0</span>/<span id="upg6cap">5</span></button>
     </div>
     <div class="upgrade">
-      <button onclick="buyUpgrade7()">Transcend upgrade 3: Roots rebirth upgrades  2 - 4 costs by 2 | Cost: <span id="upg7Cost">20</span> | Bought: <span id="upg7amount">0</span>/<span id="upg7cap">5</span></button>
+      <button onclick="buyUpgrade7()">Transcend upgrade 3: Roots rebirth upgrades 2-4 costs by 2 | Cost: <span id="upg7Cost">20</span> | Bought: <span id="upg7amount">0</span>/<span id="upg7cap">5</span></button>
     </div>
     <div class="upgrade">
-      <button onclick="buyUpgrade8()">Transcend upgrade 4: Automatically gain 100%/s rebirths | Cost: <span id="upg8Cost">50</span> | Bought: <span id="upg8amount">0</span>/<span id="upg8cap">1</span></button>
+      <button onclick="buyUpgrade8()">Transcend upgrade 4: Automatically gain 100%/s rebirths and autobuy rebirth upg 1-4 every 100ms | Cost: <span id="upg8Cost">50</span> | Bought: <span id="upg8amount">0</span>/<span id="upg8cap">1</span></button>
     </div>
-    <button onclick="transcend()">Transcend (Cost: Fee25,000)</button>
+    <div class="upgrade">
+      <button onclick="buyUpgrade9()">Transcend upgrade 5: ^3 Power amount each time | Cost: <span id="upg9Cost">60</span> | Bought: <span id="upg9amount">0</span>/<span id="upg9cap">10</span></button>
+    </div>
+    <button onclick="transcend()">Transcend (Cost: Fee10,000)</button>
     <div id="willgaintran">Will gain transcend:</div>    
   </div>
 
-  <div style="margin: 10px;">
-    <input id="scaleInput" type="number" step="0.1" min="0.4" max="3" placeholder="Scale amount (0.4-2.0)" style="inline-size: 155px; position: fixed; inset-block-start: 15px; inset-inline-start: 150px; background: black; color: white; border: 1px solid white; padding: 10px; z-index: 1000;">
-    <button onclick="scaleGameWrapper()" style="position: fixed; inset-block-start: 10px; inset-inline-start: 10px; background: black; color: white; border: 1px solid white; padding: 10px; z-index: 1000;">Scale Game</button>
+  <!-- SETTINGS TAB -->
+  <div id="settings-wrapper" class="tab-content">
+    <div id="tab-bar">
+      <button class="tab-button" onclick="switchTab('game')">Game</button>
+      <button id="transcend-tab-button-3" class="tab-button locked" onclick="tryOpenTranscend()">Transcend (Locked - Fee10,000 required)</button>
+      <button class="tab-button active" onclick="switchTab('settings')">Other</button>
+    </div>
+
+    <h1>Other</h1>
+    <button id="saveButton">Copy Save</button>
+    <button id="loadButton">Load Game</button>
+    <button onclick="resetGame()">Reset Game</button>
+    <button id="calculatorButton" onclick="openCalculator()">Calculator</button>
+    <textarea id="saveInput" rows="4" cols="50" placeholder="Paste your save string here and then press the load game button again" style="display:none; margin-block-start:75px; font-family: monospace;"></textarea>
+    <div class="discord-link">
+      <a href="https://discord.gg/xAmHhcXTJZ" target="_blank">Join my Discord Server</a>
+    </div>
   </div>
-
-  <div class="discord-link">
-        <a href="https://discord.gg/xAmHhcXTJZ" target="_blank">Join my Discord Server</a>
-  </div>
-
-  <script>
-    function scaleGameWrapper() {
-      const scaleValue = Math.min(Math.max(parseFloat(document.getElementById('scaleInput').value), 0.4),2);
-      if (!isNaN(scaleValue) && scaleValue > 0) {
-        document.querySelectorAll('.tab-content').forEach(el => {
-          el.style.transform = `scale(${scaleValue})`;
-        });
-      } else {
-        alert("Please enter a valid positive number.");
-      }
-    }
-
-    function switchTab(tab) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      if (tab === 'game') {
-        document.getElementById('game-wrapper').classList.add('active');
-      } else if (tab === 'transcend') {
-        document.getElementById('transcend-wrapper').classList.add('active');
-      }
-
-      const buttons = document.querySelectorAll('.tab-button');
-      buttons.forEach(btn => btn.classList.remove('active'));
-      buttons.forEach(btn => {
-        if (tab === 'game' && btn.textContent.includes("Game")) btn.classList.add('active');
-        if (tab === 'transcend' && btn.textContent.includes("Transcend")) btn.classList.add('active');
-      });
-    }
-
-    const TRANSCEND_UNLOCK_REQ = ExpantaNum("10^^ee25000");
-
-    function updateTabLockStatus() {
-      const transcendBtn1 = document.getElementById("transcend-tab-button");
-      const transcendBtn2 = document.getElementById("transcend-tab-button-2");
-
-      const unlocked = value.gte(TRANSCEND_UNLOCK_REQ) || transcended.eq(1);
-      const label = unlocked ? "Transcend" : "Transcend (Locked - Fee25,000 required)";
-
-      [transcendBtn1, transcendBtn2].forEach(btn => {
-        if (!btn) return;
-        btn.textContent = label;
-        if (unlocked) {
-          btn.classList.remove("locked");
-        } else {
-          btn.classList.add("locked");
-        }
-      });
-    }
-
-    function tryOpenTranscend() {
-      if (value.gte(TRANSCEND_UNLOCK_REQ) || transcended.eq(1)) {
-        switchTab("transcend");
-      }
-    }
-
-    setInterval(updateTabLockStatus, 20);
-  </script>
 </body>
 </html>
