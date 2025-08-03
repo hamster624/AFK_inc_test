@@ -157,7 +157,7 @@ function resetGame() {
   upg7Cost = new ExpantaNum(20);
   upg8Cost = new ExpantaNum(50);
   upg9Cost = new ExpantaNum(60);
-  localStorage.removeItem("afk_save");
+  localStorage.removeItem("afk_save_test");
   saveGame();
   updateDisplay();
   updateDisplay2();
@@ -316,3 +316,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     setInterval(updateTabLockStatus, 20);
+
